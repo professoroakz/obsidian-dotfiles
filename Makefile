@@ -1,0 +1,105 @@
+.PHONY: help init clean sync backup verify test install-hooks
+
+# Default target
+.DEFAULT_GOAL := help
+
+# Colors for output
+CYAN := \033[0;36m
+GREEN := \033[0;32m
+YELLOW := \033[0;33m
+RED := \033[0;31m
+NC := \033[0m # No Color
+
+help: ## Show this help message
+	@echo "$(CYAN)obsidian-pub Makefile$(NC)"
+	@echo ""
+	@echo "$(GREEN)Available targets:$(NC)"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  $(CYAN)%-15s$(NC) %s\n", $$1, $$2}'
+
+init: ## Initialize the repository (first-time setup)
+	@echo "$(GREEN)Initializing repository...$(NC)"
+	@if [ ! -f .env ]; then \
+		cp .env.example .env; \
+		echo "$(YELLOW)Created .env file from .env.example$(NC)"; \
+		echo "$(YELLOW)Please update .env with your configuration$(NC)"; \
+	fi
+	@if [ ! -d .obsidian ]; then \
+		mkdir -p .obsidian; \
+		echo "$(GREEN)Created .obsidian directory$(NC)"; \
+	fi
+	@if [ ! -d notes ]; then \
+		mkdir -p notes; \
+		echo "$(GREEN)Created notes directory$(NC)"; \
+	fi
+	@echo "$(GREEN)✓ Repository initialized successfully!$(NC)"
+
+clean: ## Clean temporary files and caches
+	@echo "$(YELLOW)Cleaning temporary files...$(NC)"
+	@find . -type f -name "*.swp" -delete
+	@find . -type f -name "*.swo" -delete
+	@find . -type f -name "*~" -delete
+	@find . -type f -name ".DS_Store" -delete
+	@find . -type f -name "*.log" -delete
+	@echo "$(GREEN)✓ Cleanup complete!$(NC)"
+
+sync: ## Sync notes with git (pull, commit, push)
+	@echo "$(CYAN)Syncing notes...$(NC)"
+	@./scripts/sync.sh
+
+backup: ## Create a backup of the vault
+	@echo "$(CYAN)Creating backup...$(NC)"
+	@./scripts/backup.sh
+
+verify: ## Verify repository structure and files
+	@echo "$(CYAN)Verifying repository...$(NC)"
+	@./scripts/verify.sh
+
+test: ## Run tests (if any)
+	@echo "$(CYAN)Running tests...$(NC)"
+	@if [ -d tests ]; then \
+		cd tests && ./run-tests.sh; \
+	else \
+		echo "$(YELLOW)No tests found$(NC)"; \
+	fi
+
+install-hooks: ## Install git hooks
+	@echo "$(CYAN)Installing git hooks...$(NC)"
+	@if [ -f scripts/install-hooks.sh ]; then \
+		./scripts/install-hooks.sh; \
+	else \
+		echo "$(YELLOW)No hooks installer found$(NC)"; \
+	fi
+
+status: ## Show git status in a readable format
+	@echo "$(CYAN)Repository status:$(NC)"
+	@git status -sb
+
+stats: ## Show repository statistics
+	@echo "$(CYAN)Repository Statistics:$(NC)"
+	@echo "$(GREEN)Total notes:$(NC) $$(find . -name '*.md' -not -path '*/\.*' | wc -l)"
+	@echo "$(GREEN)Total words:$(NC) $$(find . -name '*.md' -not -path '*/\.*' -exec cat {} \; | wc -w)"
+	@echo "$(GREEN)Repository size:$(NC) $$(du -sh . | cut -f1)"
+
+update: ## Update repository and scripts
+	@echo "$(CYAN)Updating repository...$(NC)"
+	@git pull origin main
+	@echo "$(GREEN)✓ Repository updated!$(NC)"
+
+quick-commit: ## Quick commit all changes with timestamp
+	@echo "$(CYAN)Quick commit...$(NC)"
+	@git add .
+	@git commit -m "Update notes - $$(date '+%Y-%m-%d %H:%M:%S')" || true
+	@git push origin $$(git branch --show-current)
+	@echo "$(GREEN)✓ Changes committed and pushed!$(NC)"
+
+check: ## Check for broken links and issues
+	@echo "$(CYAN)Checking for issues...$(NC)"
+	@echo "$(YELLOW)Looking for broken links...$(NC)"
+	@grep -r "\[\[.*\]\]" . --include="*.md" | grep -v ".git" || echo "$(GREEN)No broken links found$(NC)"
+
+list-tags: ## List all tags in notes
+	@echo "$(CYAN)Tags used in notes:$(NC)"
+	@grep -roh "#[a-zA-Z0-9_-]*" . --include="*.md" | sort | uniq -c | sort -rn
+
+.SILENT: help

@@ -1,0 +1,45 @@
+name: Auto Sync
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync:
+    name: Auto Sync Notes
+    runs-on: ubuntu-latest
+    
+    # Only run on main repository, not forks
+    if: github.repository == 'professoroakz/obsidian-pub'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Configure git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+    
+    - name: Check for changes
+      id: check
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Commit and push changes
+      if: steps.check.outputs.has_changes == 'true'
+      run: |
+        git add .
+        git commit -m "Auto sync - $(date '+%Y-%m-%d %H:%M:%S')"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

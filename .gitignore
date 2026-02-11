@@ -1,0 +1,48 @@
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.swp
+*.swo
+*~
+.tmp
+*.log
+*.bak
+*.backup
+
+# Obsidian workspace
+.obsidian/workspace
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Local configuration
+.env.local
+.env
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Backup files
+.dotfiles_backup_*
+*.old
+
+# Sync conflicts
+*conflict*.md

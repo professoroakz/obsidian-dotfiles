@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    name: Verify Repository
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check file structure
+      run: |
+        echo "Checking required files..."
+        for file in .gitignore LICENSE README.md Makefile; do
+          if [ ! -f "$file" ]; then
+            echo "ERROR: Missing required file: $file"
+            exit 1
+          fi
+        done
+        echo "✓ All required files present"
+    
+    - name: Verify scripts
+      run: |
+        echo "Verifying scripts..."
+        if [ -d scripts ]; then
+          for script in scripts/*.sh; do
+            if [ -f "$script" ]; then
+              bash -n "$script" || exit 1
+              echo "✓ $script syntax OK"
+            fi
+          done
+        fi
+    
+    - name: Run verification script
+      run: |
+        if [ -x scripts/verify.sh ]; then
+          ./scripts/verify.sh
+        fi
+    
+    - name: Check for large files
+      run: |
+        echo "Checking for large files (>5MB)..."
+        large_files=$(find . -type f -size +5M -not -path "./.git/*" -not -path "./backups/*")
+        if [ -n "$large_files" ]; then
+          echo "WARNING: Large files found:"
+          echo "$large_files"
+        else
+          echo "✓ No large files found"
+        fi
+
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Lint markdown files
+      uses: DavidAnson/markdownlint-cli2-action@v16
+      with:
+        globs: |
+          **/*.md
+          !node_modules
