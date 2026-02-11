@@ -40,7 +40,7 @@ def sync_vault(args):
     try:
         message = args.message or "auto"
         run_command(f'git commit -m "vault sync {message}"', cwd=vault_path)
-    except:
+    except subprocess.CalledProcessError:
         print("No changes to commit")
     
     run_command("git push", cwd=vault_path)
@@ -76,8 +76,8 @@ def stats_vault(args):
             with open(file, 'r', encoding='utf-8') as f:
                 content = f.read()
                 total_words += len(content.split())
-        except:
-            pass
+        except (IOError, UnicodeDecodeError) as e:
+            print(f"Warning: Could not read {file}: {e}", file=sys.stderr)
     
     print(f"Vault Statistics:")
     print(f"  Total notes: {len(md_files)}")

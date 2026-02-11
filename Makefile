@@ -86,7 +86,16 @@ status: ## Show git status in a readable format
 	@echo "$(CYAN)Repository status:$(NC)"
 	@git status -sb
 
-sync: pull push ## Sync notes with git (pull then push)
+sync: ## Sync notes with git (pull then push)
+	@echo "$(CYAN)Syncing vault...$(NC)"
+	@if git pull --rebase origin $$(git branch --show-current); then \
+		git add -A && \
+		git commit -m "vault: sync $$(date +%Y-%m-%d\ %H:%M)" || true && \
+		git push origin $$(git branch --show-current); \
+	else \
+		echo "$(RED)Pull failed - please resolve conflicts manually$(NC)"; \
+		exit 1; \
+	fi
 
 push: ## Stage all changes and push to remote
 	@echo "$(CYAN)Pushing changes...$(NC)"
