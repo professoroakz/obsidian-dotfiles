@@ -1,0 +1,8 @@
+[submodule "modules/obsidian-plugins"]
+	path = modules/obsidian-plugins
+	url = https://github.com/obsidianmd/obsidian-releases.git
+	branch = master
+[submodule "modules/awesome-obsidian"]
+	path = modules/awesome-obsidian
+	url = https://github.com/kmaasrud/awesome-obsidian.git
+	branch = main
