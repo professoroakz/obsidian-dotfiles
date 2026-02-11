@@ -15,6 +15,7 @@ Curated collection of awesome Obsidian resources.
 See [docs/SUBMODULES.md](../docs/SUBMODULES.md) for detailed instructions.
 
 To initialize all submodules:
+
 ```bash
 make submodule-init
 ```

@@ -19,6 +19,7 @@ This directory contains configuration files and shell enhancements for the obsid
 
 ### Bash
 Add to your `~/.bashrc`:
+
 ```bash
 if [ -f /path/to/obsidian-pub/.bashrc.local ]; then
     source /path/to/obsidian-pub/.bashrc.local
@@ -27,6 +28,7 @@ fi
 
 ### Zsh
 Add to your `~/.zshrc`:
+
 ```bash
 if [ -f /path/to/obsidian-pub/.zshrc.local ]; then
     source /path/to/obsidian-pub/.zshrc.local
@@ -35,6 +37,7 @@ fi
 
 ### Git
 Include in your `~/.gitconfig`:
+
 ```ini
 [include]
     path = /path/to/obsidian-pub/.gitconfig.local

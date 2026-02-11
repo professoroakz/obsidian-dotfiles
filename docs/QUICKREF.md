@@ -3,12 +3,14 @@
 ## Common Commands
 
 ### Initialization
+
 ```bash
 make init                # First-time setup
 make install-hooks       # Install git hooks
 ```
 
 ### Daily Workflow
+
 ```bash
 make sync               # Sync with git
 make quick-commit       # Quick commit with timestamp
@@ -17,6 +19,7 @@ make status             # Check git status
 ```
 
 ### Maintenance
+
 ```bash
 make clean              # Remove temporary files
 make verify             # Verify repository structure
@@ -27,21 +30,27 @@ make update             # Update repository
 ## Script Usage
 
 ### Sync Script
+
 ```bash
 ./scripts/sync.sh
 ```
+
 Pulls changes, commits updates, and pushes to remote.
 
 ### Backup Script
+
 ```bash
 ./scripts/backup.sh
 ```
+
 Creates timestamped backup in `./backups/`.
 
 ### Verify Script
+
 ```bash
 ./scripts/verify.sh
 ```
+
 Checks repository health and configuration.
 
 ## Environment Variables
@@ -57,6 +66,7 @@ SYNC_INTERVAL=3600
 ## Git Commands
 
 ### Basic Operations
+
 ```bash
 git status              # Check status
 git add .               # Stage all changes
@@ -66,6 +76,7 @@ git pull                # Pull from remote
 ```
 
 ### Useful Shortcuts
+
 ```bash
 make quick-commit       # Add, commit, push with timestamp
 make sync               # Full sync workflow
@@ -74,6 +85,7 @@ make sync               # Full sync workflow
 ## Markdown Tips
 
 ### Obsidian Links
+
 ```markdown
 [[Note Name]]           # Internal link
 [[Note|Alias]]          # Link with custom text
@@ -81,12 +93,14 @@ make sync               # Full sync workflow
 ```
 
 ### Tags
+
 ```markdown
 #tag                    # Simple tag
 #nested/tag             # Nested tag
 ```
 
 ### Code Blocks
+
 ````markdown
 ```language
 code here
@@ -96,6 +110,7 @@ code here
 ## Troubleshooting
 
 ### Sync Issues
+
 ```bash
 git status              # Check what's wrong
 git pull --rebase       # Pull with rebase
@@ -103,6 +118,7 @@ git push --force        # Force push (careful!)
 ```
 
 ### Large Files
+
 ```bash
 # Check for large files
 find . -type f -size +5M -not -path "./.git/*"
@@ -112,6 +128,7 @@ git lfs track "*.pdf"
 ```
 
 ### Backup Recovery
+
 ```bash
 # List backups
 ls -lh backups/

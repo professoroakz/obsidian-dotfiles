@@ -221,7 +221,7 @@ The `.editorconfig` file ensures consistent formatting.
 
 Yes, recommended structure:
 
-```
+```text
 notes/
 ├── daily/
 ├── projects/

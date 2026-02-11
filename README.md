@@ -71,7 +71,7 @@ Run `make help` to see all available commands:
 
 ## 📁 Repository Structure
 
-```
+```text
 obsidian-pub/
 ├── .github/              # GitHub configuration
 │   ├── ISSUE_TEMPLATE/   # Issue templates

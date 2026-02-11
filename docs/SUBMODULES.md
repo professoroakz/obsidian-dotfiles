@@ -17,32 +17,38 @@ Curated list of Obsidian resources
 ## Working with Submodules
 
 ### Initialize submodules (first time)
+
 ```bash
 git submodule update --init --recursive
 ```
 
 ### Update all submodules
+
 ```bash
 git submodule update --remote --recursive
 ```
 
 ### Update specific submodule
+
 ```bash
 git submodule update --remote modules/obsidian-plugins
 ```
 
 ### Clone repository with submodules
+
 ```bash
 git clone --recurse-submodules https://github.com/professoroakz/obsidian-pub.git
 ```
 
 ### Add new submodule
+
 ```bash
 git submodule add <repository-url> <path>
 git commit -m "Add submodule: <name>"
 ```
 
 ### Remove submodule
+
 ```bash
 git submodule deinit -f <path>
 git rm -f <path>
