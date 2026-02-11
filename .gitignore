@@ -1,4 +1,12 @@
 # OS specific
+# Obsidian
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/plugins/recent-files-obsidian/data.json
+.trash/
+.hotreload
+
+# System files
 .DS_Store
 .DS_Store?
 ._*
@@ -46,3 +54,29 @@ node_modules/
 
 # Sync conflicts
 *conflict*.md
+desktop.ini
+
+# Temporary files
+*.tmp
+*~
+*.swp
+*.swo
+*.bak
+
+# Build artifacts
+node_modules/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archives
+*.tar.gz
+*.zip
